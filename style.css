@@ -109,50 +109,58 @@ body.leaving { opacity: 0; animation: none; }
   background: rgba(255, 255, 255, .06);
 }
 
-/* ---------- オープニング：上下に開く扉 ---------- */
+/* ---------- オープニング（全体4秒） ----------
+   0.0-0.5s  何もない
+   0.5-1.3s  中央に斜めの線が走る
+   1.5-3.0s  上下に開く
+   2.7-4.0s  文字とタブが現れる                  */
 .door {
   position: fixed;
-  left: 0;
-  width: 100%;
-  height: 50.1%;
+  inset: 0;
   z-index: 10;
-  background: linear-gradient(90deg, #2a2a2a, #121212);
-  transition: transform 1.6s var(--ease);
+  opacity: 0;
+  background: linear-gradient(135deg, #242424, #101010);
   pointer-events: none;
 }
-.door.t { top: 0; border-bottom: 1px solid var(--gray-2); }
-.door.b { bottom: 0; border-top: 1px solid var(--gray-2); }
 .door::after {
   content: "";
   position: absolute;
   inset: 0;
-  background: repeating-linear-gradient(180deg, transparent 0 38px, rgba(255,255,255,.025) 38px 39px);
+  background: repeating-linear-gradient(135deg, transparent 0 38px, rgba(255,255,255,.025) 38px 39px);
 }
+/* 斜めの境界線（右上がり）。seam の線と同じ座標で切り分ける */
+.door.t { clip-path: polygon(0 0, 100% 0, 100% 40%, 0 60%); }
+.door.b { clip-path: polygon(0 60%, 100% 40%, 100% 100%, 0 100%); }
+.door.t { animation: door-in .8s .5s ease forwards, slide-up 1.5s 1.5s var(--ease) forwards; }
+.door.b { animation: door-in .8s .5s ease forwards, slide-down 1.5s 1.5s var(--ease) forwards; }
+@keyframes door-in { to { opacity: 1; } }
+@keyframes slide-up { to { transform: translateY(-100%); } }
+@keyframes slide-down { to { transform: translateY(100%); } }
+
 .seam {
   position: fixed;
+  inset: 0;
   z-index: 11;
-  top: 50%;
-  left: 0;
-  width: 100%;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, var(--gray-4), transparent);
-  box-shadow: 0 0 18px rgba(255,255,255,.35);
+  pointer-events: none;
   transform: scaleX(0);
-  animation: seam 1s .5s var(--ease) forwards;
+  animation: seam-in .8s .5s var(--ease) forwards, seam-out .5s 1.5s forwards;
 }
-@keyframes seam { to { transform: scaleX(1); } }
+.seam svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  filter: drop-shadow(0 0 6px rgba(255, 255, 255, .6));
+}
+.seam line { stroke: var(--gray-4); stroke-width: 1.5; }
+@keyframes seam-in { to { transform: scaleX(1); } }
+@keyframes seam-out { to { opacity: 0; } }
 
 .opening .zh, .opening .ja, .opening .tabs { opacity: 0; }
 .opening .rule { width: 0; }
-
-.open .door.t { transform: translateY(-100%); }
-.open .door.b { transform: translateY(100%); }
-.open .seam { animation: seam-out .5s forwards; }
-@keyframes seam-out { from { opacity: 1; transform: scaleX(1); } to { opacity: 0; transform: scaleX(1); } }
-.open .zh { animation: fade .9s 1.2s ease forwards; }
-.open .rule { animation: grow 1s 1.8s var(--ease) forwards; }
-.open .ja { animation: fade .9s 2.2s ease forwards; }
-.open .tabs { animation: fade .9s 3s ease forwards; }
+.opening .zh { animation: fade .8s 2.7s ease forwards; }
+.opening .rule { animation: grow .7s 3.2s var(--ease) forwards; }
+.opening .ja { animation: fade .7s 3.3s ease forwards; }
+.opening .tabs { animation: fade .5s 3.5s ease forwards; }
 @keyframes fade { to { opacity: 1; } }
 @keyframes grow { to { width: 72px; } }
 
