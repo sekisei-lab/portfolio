@@ -21,11 +21,12 @@ body {
   background: radial-gradient(ellipse at 50% 50%, var(--gray-1) 0%, var(--black) 70%);
   color: var(--gray-4);
   font-family: "Noto Serif JP", serif;
+}
+/* フェードインはオープニングだけ。ほかのページは即時に表示する */
+body.opening {
   opacity: 0;
   animation: page-in .9s ease forwards;
-  transition: opacity .6s ease;
 }
-body.leaving { opacity: 0; animation: none; }
 @keyframes page-in { to { opacity: 1; } }
 
 /* ---------- 中央の文字 ---------- */
