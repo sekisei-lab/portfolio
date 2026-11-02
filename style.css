@@ -168,8 +168,3 @@ body.leaving { opacity: 0; animation: none; }
   :root { --tab-w: 44px; }
   .tabs a { font-size: .65rem; letter-spacing: .4em; }
 }
-@media (prefers-reduced-motion: reduce) {
-  .door, .seam { display: none; }
-  .opening .zh, .opening .ja, .opening .tabs { opacity: 1; animation: none !important; }
-  .opening .rule { width: 72px; animation: none !important; }
-}
