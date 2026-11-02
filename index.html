@@ -7,193 +7,15 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@500;700&family=Noto+Serif+JP:wght@400;500&display=swap" rel="stylesheet">
-<style>
-:root {
-  --black: #0a0a0a;
-  --charcoal: #161616;
-  --gray-1: #1f1f1f;
-  --gray-2: #3a3a3a;
-  --gray-3: #8a8a8a;
-  --gray-4: #d4d4d4;
-  --ease: cubic-bezier(.77, 0, .175, 1);
-}
-* { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; }
-body {
-  background: var(--black);
-  color: var(--gray-4);
-  font-family: "Noto Serif JP", serif;
-  overflow-x: hidden;
-}
-body.locked { overflow: hidden; }
-
-/* ---------- Opening ---------- */
-.hero {
-  position: relative;
-  height: 100vh;
-  height: 100svh;
-  display: grid;
-  place-items: center;
-  background:
-    radial-gradient(ellipse at 50% 50%, var(--gray-1) 0%, var(--black) 70%);
-  overflow: hidden;
-}
-.copy {
-  text-align: center;
-  padding: 0 24px;
-  max-width: 960px;
-}
-.zh {
-  font-family: "Noto Serif SC", serif;
-  font-weight: 700;
-  font-size: clamp(1.6rem, 5vw, 3.6rem);
-  letter-spacing: .08em;
-  line-height: 1.5;
-  color: #f2f2f2;
-  opacity: 0;
-  transform: translateY(14px);
-}
-.rule {
-  width: 0;
-  height: 1px;
-  margin: 28px auto;
-  background: var(--gray-3);
-}
-.ja {
-  font-weight: 400;
-  font-size: clamp(.95rem, 2.2vw, 1.35rem);
-  letter-spacing: .12em;
-  line-height: 2;
-  color: var(--gray-3);
-  opacity: 0;
-  transform: translateY(10px);
-}
-.ja small {
-  display: block;
-  margin-top: 6px;
-  font-size: .8em;
-  color: #666;
-  letter-spacing: .2em;
-}
-.scroll {
-  position: absolute;
-  bottom: 32px;
-  left: 50%;
-  translate: -50% 0;
-  font-size: .7rem;
-  letter-spacing: .4em;
-  color: var(--gray-3);
-  opacity: 0;
-  text-decoration: none;
-}
-.scroll::after {
-  content: "";
-  display: block;
-  width: 1px;
-  height: 36px;
-  margin: 10px auto 0;
-  background: linear-gradient(var(--gray-3), transparent);
-  animation: drip 2s ease-in-out infinite;
-}
-@keyframes drip {
-  0% { transform: scaleY(0); transform-origin: top; }
-  50% { transform: scaleY(1); transform-origin: top; }
-  51% { transform: scaleY(1); transform-origin: bottom; }
-  100% { transform: scaleY(0); transform-origin: bottom; }
-}
-
-/* 左右に開く扉 */
-.door {
-  position: fixed;
-  top: 0;
-  width: 50.1%;
-  height: 100%;
-  z-index: 10;
-  background: linear-gradient(180deg, #2a2a2a, #121212);
-  transition: transform 1.6s var(--ease);
-  pointer-events: none;
-}
-.door.l { left: 0; border-right: 1px solid var(--gray-2); }
-.door.r { right: 0; border-left: 1px solid var(--gray-2); }
-.door::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: repeating-linear-gradient(90deg, transparent 0 38px, rgba(255,255,255,.025) 38px 39px);
-}
-.seam {
-  position: fixed;
-  z-index: 11;
-  top: 0;
-  left: 50%;
-  width: 1px;
-  height: 100%;
-  background: linear-gradient(transparent, var(--gray-4), transparent);
-  transform: scaleY(0);
-  box-shadow: 0 0 18px rgba(255,255,255,.35);
-  animation: seam 1s .2s var(--ease) forwards;
-}
-@keyframes seam { to { transform: scaleY(1); } }
-
-.open .door.l { transform: translateX(-100%); }
-.open .door.r { transform: translateX(100%); }
-.open .seam { animation: seam-out .5s forwards; }
-@keyframes seam-out { from { opacity: 1; } to { opacity: 0; } }
-
-.open .zh { animation: rise 1.2s 1.1s var(--ease) forwards; }
-.open .rule { animation: grow 1s 1.7s var(--ease) forwards; }
-.open .ja { animation: rise 1.2s 2.1s var(--ease) forwards; }
-.open .scroll { animation: fade 1s 3s forwards; }
-@keyframes rise { to { opacity: 1; transform: none; } }
-@keyframes grow { to { width: 72px; } }
-@keyframes fade { to { opacity: 1; } }
-
-/* ---------- Sections ---------- */
-main { background: var(--charcoal); }
-section {
-  min-height: 70vh;
-  display: grid;
-  place-content: center;
-  gap: 16px;
-  padding: 96px 24px;
-  text-align: center;
-  border-top: 1px solid var(--gray-1);
-}
-section h2 {
-  font-weight: 500;
-  font-size: .8rem;
-  letter-spacing: .5em;
-  text-transform: uppercase;
-  color: var(--gray-3);
-}
-section p {
-  max-width: 34em;
-  line-height: 2;
-  color: var(--gray-4);
-}
-footer {
-  padding: 32px;
-  text-align: center;
-  font-size: .7rem;
-  letter-spacing: .3em;
-  color: var(--gray-2);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .door, .seam { display: none; }
-  .zh, .ja, .scroll { opacity: 1; transform: none; animation: none !important; }
-  .rule { width: 72px; animation: none !important; }
-  .scroll::after { animation: none; }
-}
-</style>
+<link rel="stylesheet" href="style.css">
 </head>
-<body class="locked">
+<body class="opening">
 
-<div class="door l"></div>
-<div class="door r"></div>
+<div class="door t"></div>
+<div class="door b"></div>
 <div class="seam"></div>
 
-<header class="hero" id="top">
+<main class="stage">
   <div class="copy">
     <p class="zh">努力一生，<br>没赶上别人的起跑线</p>
     <div class="rule"></div>
@@ -202,35 +24,14 @@ footer {
       <small>……まあ、それでも走ってます。</small>
     </p>
   </div>
-  <a class="scroll" href="#about">SCROLL</a>
-</header>
-
-<main>
-  <section id="about">
-    <h2>About</h2>
-    <p>ここに自己紹介を入れます。</p>
-  </section>
-  <section id="works">
-    <h2>Works</h2>
-    <p>ここに実績や作品を入れます。</p>
-  </section>
-  <section id="contact">
-    <h2>Contact</h2>
-    <p>ここに連絡先を入れます。</p>
-  </section>
 </main>
-<footer>&copy; 2026</footer>
 
-<script>
-  const start = () => {
-    document.body.classList.add("open");
-    setTimeout(() => document.body.classList.remove("locked"), 2800);
-  };
-  // フォント読み込み後に開く（最大1.5秒待つ）
-  Promise.race([
-    document.fonts ? document.fonts.ready : Promise.resolve(),
-    new Promise(r => setTimeout(r, 1500))
-  ]).then(() => setTimeout(start, 900));
-</script>
+<nav class="tabs">
+  <a href="about.html">ABOUT</a>
+  <a href="works.html">WORKS</a>
+  <a href="contact.html">CONTACT</a>
+</nav>
+
+<script src="app.js"></script>
 </body>
 </html>
